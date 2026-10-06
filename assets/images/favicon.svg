@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>New Indifood</title>
+  <rect width="64" height="64" rx="12" fill="#fff"/>
+  <path d="M30 45C12 45 6 31 8 16c17-1 29 9 24 25C25 30 19 25 14 23c7 6 11 13 16 22Z" fill="#f58a00"/>
+  <path d="M34 45C23 24 37 8 57 7c1 21-6 34-20 37 3-13 8-22 15-29-10 6-16 17-18 30Z" fill="#92bf19"/>
+  <path d="M15 50c11 9 24 9 35-1" fill="none" stroke="#f58a00" stroke-width="5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "name": "indifood-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Indifood static product catalogue and enquiry website",
+  "scripts": {
+    "start": "node scripts/server.cjs",
+    "build": "node scripts/build-pages.cjs",
+    "test": "node tests/website.test.cjs && node --test tests/server.test.cjs tests/metadata.test.cjs",
+    "check": "node --check assets/js/app.js && node --check assets/data/products.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}
