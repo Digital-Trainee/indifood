@@ -48,6 +48,19 @@ test('production build emits one correct canonical and matching social metadata 
       }
       assert.ok(document.querySelector('meta[name="description"]').content.length > 40);
       assert.ok(document.querySelector('meta[property="og:image"]').content.startsWith('https://www.example.com/assets/'));
+      const socialImage = document.querySelector('meta[property="og:image"]').content;
+      assert.equal(document.querySelector('meta[property="og:image:secure_url"]').content, socialImage);
+      assert.equal(document.querySelector('meta[name="twitter:image"]').content, socialImage);
+      assert.equal(document.querySelector('meta[name="twitter:card"]').content, 'summary_large_image');
+      const imageFile = path.join(__dirname, '..', new URL(socialImage).pathname.slice(1));
+      assert.ok(fs.existsSync(imageFile), `Missing social preview image for ${file}`);
+      if (!file.startsWith('products/')) {
+        assert.equal(socialImage, 'https://www.example.com/assets/images/og-image.png');
+        assert.equal(document.querySelector('meta[property="og:image:type"]').content, 'image/png');
+        const image = fs.readFileSync(imageFile);
+        assert.equal(image.readUInt32BE(16), Number(document.querySelector('meta[property="og:image:width"]').content));
+        assert.equal(image.readUInt32BE(20), Number(document.querySelector('meta[property="og:image:height"]').content));
+      }
       if (file === 'products/pudina.html') assert.ok(document.querySelector('meta[property="og:image"]').content.endsWith('/products/pudina.png'));
       if (file === 'thank-you.html' || file === '404.html') assert.match(document.querySelector('meta[name="robots"]').content, /noindex/);
       dom.window.close();

@@ -181,7 +181,7 @@ async function route(value) { w.location.hash = value; await new Promise(resolve
     assert.equal(pw.document.querySelector('link[rel="icon"]').getAttribute('href'), '/assets/images/favicon.svg');
     assert.equal(pw.document.querySelector('meta[property="og:title"]').content, pw.document.title);
     assert.equal(pw.document.querySelector('meta[property="og:description"]').content, pw.document.querySelector('meta[name="description"]').content);
-    assert.equal(pw.document.querySelector('meta[name="twitter:card"]').content, file.startsWith('products/') ? 'summary_large_image' : 'summary');
+    assert.equal(pw.document.querySelector('meta[name="twitter:card"]').content, 'summary_large_image');
     if (file === '404.html' || file === 'thank-you.html') {
       assert.match(pw.document.querySelector('meta[name="robots"]').content, /noindex/);
     } else {

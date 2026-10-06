@@ -11,7 +11,7 @@ const template = fs.readFileSync(path.join(root, 'templates/layout.html'), 'utf8
 const productScript = fs.readFileSync(path.join(root, 'assets/data/products.js'), 'utf8');
 const appScript = fs.readFileSync(path.join(root, 'assets/js/app.js'), 'utf8');
 const pages = [
-  ['index.html', '/', 'Explore New Indifood banana chips and find a little goodness for your everyday snack moments.'],
+  ['index.html', '/', 'Discover New Indifood banana chips in nine flavours. Made in Hingoli, Maharashtra since 2018. Explore our range and enquire about retail and bulk orders.'],
   ['products.html', '/products', 'Browse the New Indifood banana chip collection. Explore nine banana chip flavours and prepare a product enquiry.'],
   ['about.html', '/story', 'Meet New Indifood and discover the simple pleasure of a good snack shared with good company.'],
   ['contact.html', '/contact', 'Contact New Indifood in Hingoli, Maharashtra. Call +91 96235 44741 for banana chips, bulk orders, dealership and distribution enquiries.'],
@@ -55,16 +55,17 @@ for (const [file, route, description] of pages) {
   addMeta('og:title', w.document.title, true);
   addMeta('og:description', description, true);
   const product = route.startsWith('/product/') ? w.INDIFOOD.products.find(item => item.id === route.split('/')[2]) : null;
-  const imagePath = product?.image ? '/' + product.image : '/assets/images/indifood-logo.jpg';
-  const imageAlt = product ? `New Indifood ${product.name} banana chips packaging` : 'New Indifood - Taste the Goodness';
+  const imagePath = product?.image ? '/' + product.image : '/assets/images/og-image.png';
+  const imageAlt = product ? `New Indifood ${product.name} banana chips packaging` : 'New Indifood banana chips - A little goodness in every crunch. Nine flavours, authentic Indian taste.';
   addMeta('og:image', publicUrl(imagePath), true);
+  if (siteUrl?.startsWith('https:')) addMeta('og:image:secure_url', publicUrl(imagePath), true);
   addMeta('og:image:type', imagePath.endsWith('.png') ? 'image/png' : 'image/jpeg', true);
   if (!product) {
-    addMeta('og:image:width', '1754', true);
-    addMeta('og:image:height', '1241', true);
+    addMeta('og:image:width', '1200', true);
+    addMeta('og:image:height', '630', true);
   }
   addMeta('og:image:alt', imageAlt, true);
-  addMeta('twitter:card', product ? 'summary_large_image' : 'summary');
+  addMeta('twitter:card', 'summary_large_image');
   addMeta('twitter:title', w.document.title);
   addMeta('twitter:description', description);
   addMeta('twitter:image', publicUrl(imagePath));

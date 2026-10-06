@@ -33,7 +33,7 @@ The header Enquire button and basket's Continue to enquiry action open an access
 
 The phone links open the visitor's calling app. The enquiry forms send contact details, selected products, pack size and requirements to Privyr. An enquiry does not place an order. No email address, WhatsApp availability, prices or delivery terms have been assumed.
 
-The supplied logo is preserved. Uploaded packaging images are stored in `assets/images/products/`. Masala, Salted and Peri Peri use their matching uploaded images in product cards, detail views and the basket. The Home and Products pages show each product image once in the product grid; the duplicate packaging gallery has been removed. The two Masala uploads were identical. Garlic and Sweet & Spicy are included as separate catalogue products using their matching packaging images, bringing the range to nine flavours. Chatpata, Sweet, Pudina and Onion & Tomato now have AI-generated matching packaging images (PNG), created with the built-in image generation tool using the supplied Classic Salted package as reference. These are packaging concepts, not photographs of manufactured packs. All nine products have dedicated images in cards, details, and the basket. Packaging images are shown fully without cropping.
+The supplied logo is preserved. Packaging images are stored in assets/images/products/. Masala and Salted use the owner-supplied silver foil pouch designs. Chatpata, Peri Peri, Sweet, Pudina, Onion & Tomato, Garlic and Sweet & Spicy use matching AI-generated silver foil packaging concepts created with the built-in image tool from those two references. Generated variants are design concepts rather than photographs of manufactured packs. All nine products use their matching images in Home and Products cards, product details, the basket and product social metadata. The full package is shown without cropping. Prompts are recorded in assets/images/products/GENERATION.md.
 
 The basket stores product IDs and quantities locally. Contact details are forwarded through the server to Privyr to manage the enquiry; they are not saved in browser storage.
 
@@ -74,7 +74,7 @@ Examples using the configured domain:
 | About | `https://your-domain.com/about` |
 | Pudina | `https://your-domain.com/products/pudina` |
 
-Canonical URLs are written into each page's HTML at build time and match `og:url`. They use the clean page path without `.html`, query parameters, or fragments. Product social previews use the matching product photo. The 404 page has no canonical; 404 and Thank You are `noindex`.
+Canonical URLs are written into each page's HTML at build time and match `og:url`. They use the clean page path without `.html`, query parameters, or fragments. General pages use the branded 1200 x 630 PNG at `assets/images/og-image.png`; product social previews use the matching product photo. All pages include large Twitter cards, image alt text and MIME types, with `og:image:secure_url` when the configured domain uses HTTPS. The 404 page has no canonical; 404 and Thank You are `noindex`.
 
 After changing domains, update `SITE_URL` and rebuild/redeploy. Changing only the runtime environment does not rewrite existing HTML. Redirect alternate hostnames to your chosen public hostname at the hosting/proxy layer. Canonical URLs are not derived from an incoming request's Host header.
 
