@@ -175,5 +175,79 @@ window.INDIFOOD = {
       "heat": "",
       "flavourProfile": "Sweet with a spicy twist"
     }
-  ]
+  ],
+  "images": {
+    "assets/images/products/chatpata.png": {
+      "src": "assets/images/products/chatpata-960.bd0b77057ffb.webp",
+      "srcset": "assets/images/products/chatpata-160.b46265e3d179.webp 160w, assets/images/products/chatpata-480.32dc3cbc0e56.webp 480w, assets/images/products/chatpata-960.bd0b77057ffb.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/products/spicy-masala.jpg": {
+      "src": "assets/images/products/spicy-masala-960.2a4df30a3031.webp",
+      "srcset": "assets/images/products/spicy-masala-160.92f073530c7f.webp 160w, assets/images/products/spicy-masala-480.7c60877563bb.webp 480w, assets/images/products/spicy-masala-960.2a4df30a3031.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/products/classic-salted.jpg": {
+      "src": "assets/images/products/classic-salted-960.d6b13ef74d23.webp",
+      "srcset": "assets/images/products/classic-salted-160.1e882e7e661e.webp 160w, assets/images/products/classic-salted-480.4cdbe7986147.webp 480w, assets/images/products/classic-salted-960.d6b13ef74d23.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/products/peri-peri.png": {
+      "src": "assets/images/products/peri-peri-960.1bc04ea28668.webp",
+      "srcset": "assets/images/products/peri-peri-160.2f302bc60a16.webp 160w, assets/images/products/peri-peri-480.4050b9b4d349.webp 480w, assets/images/products/peri-peri-960.1bc04ea28668.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/products/sweet.png": {
+      "src": "assets/images/products/sweet-960.c813200d666d.webp",
+      "srcset": "assets/images/products/sweet-160.d6c3932a9118.webp 160w, assets/images/products/sweet-480.8a248b95a581.webp 480w, assets/images/products/sweet-960.c813200d666d.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/products/pudina.png": {
+      "src": "assets/images/products/pudina-960.42d54042aa7f.webp",
+      "srcset": "assets/images/products/pudina-160.54b2780b5260.webp 160w, assets/images/products/pudina-480.4f53180d20d1.webp 480w, assets/images/products/pudina-960.42d54042aa7f.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/products/onion-tomato.png": {
+      "src": "assets/images/products/onion-tomato-960.d261234ded1f.webp",
+      "srcset": "assets/images/products/onion-tomato-160.dd97bad23cd2.webp 160w, assets/images/products/onion-tomato-480.988fe647daf6.webp 480w, assets/images/products/onion-tomato-960.d261234ded1f.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/products/garlic.png": {
+      "src": "assets/images/products/garlic-960.377385a4c5dc.webp",
+      "srcset": "assets/images/products/garlic-160.9f52e8f96dde.webp 160w, assets/images/products/garlic-480.f2904456c94b.webp 480w, assets/images/products/garlic-960.377385a4c5dc.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/products/sweet-and-spicy.png": {
+      "src": "assets/images/products/sweet-and-spicy-960.f45e2e1d4e0d.webp",
+      "srcset": "assets/images/products/sweet-and-spicy-160.350f0bbef3cc.webp 160w, assets/images/products/sweet-and-spicy-480.a6d018e2d61d.webp 480w, assets/images/products/sweet-and-spicy-960.f45e2e1d4e0d.webp 960w",
+      "width": 1254,
+      "height": 1254
+    },
+    "assets/images/banana-chips.png": {
+      "src": "assets/images/banana-chips-1536.75446e01e813.webp",
+      "srcset": "assets/images/banana-chips-768.561bf32f5145.webp 768w, assets/images/banana-chips-1536.75446e01e813.webp 1536w",
+      "width": 1536,
+      "height": 1024
+    },
+    "assets/images/banana-chips-story.png": {
+      "src": "assets/images/banana-chips-story-1536.fdfa094f39bf.webp",
+      "srcset": "assets/images/banana-chips-story-768.92cc5bf078f5.webp 768w, assets/images/banana-chips-story-1536.fdfa094f39bf.webp 1536w",
+      "width": 1536,
+      "height": 1024
+    },
+    "assets/images/indifood-logo.jpg": {
+      "src": "assets/images/indifood-logo-768.29326d0155cc.webp",
+      "srcset": "assets/images/indifood-logo-384.b821e389be17.webp 384w, assets/images/indifood-logo-768.29326d0155cc.webp 768w",
+      "width": 1754,
+      "height": 1241
+    }
+  }
 };

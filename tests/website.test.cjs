@@ -78,7 +78,7 @@ async function route(value) { w.location.hash = value; await new Promise(resolve
   w.scrollY = 0;
   w.dispatchEvent(new w.Event('scroll'));
   assert.equal(q('#back-to-top').hidden, true);
-  assert.equal(q('.detail-photo img').getAttribute('src'), 'assets/images/products/spicy-masala.jpg');
+  assert.equal(q('.detail-photo img').getAttribute('src'), w.INDIFOOD.images['assets/images/products/spicy-masala.jpg'].src);
   assert.equal(qa('.flavour-option').length, 9);
   assert.equal(q('.flavour-option[aria-current]').dataset.route, '/product/masala');
   assert.equal(q('.mobile-navigation a[aria-current]').dataset.route, '/products');
@@ -168,7 +168,7 @@ async function route(value) { w.location.hash = value; await new Promise(resolve
   for (const file of ['assets/images/indifood-logo.jpg', 'assets/images/banana-chips.png', 'assets/images/flavour-collection.png', 'assets/vendor/lucide.min.js', 'assets/data/products.js', 'assets/js/app.js', 'assets/css/styles.css']) assert.ok(fs.statSync(path.join(root, file)).size > 0);
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   for (const [, asset] of html.matchAll(/(?:src|href)="(assets\/[^\"]+)"/g)) {
-    assert.ok(fs.existsSync(path.join(root, asset)), `Missing HTML asset: ${asset}`);
+    assert.ok(fs.existsSync(path.join(root, asset.split('?')[0])), `Missing HTML asset: ${asset}`);
   }
   const css = fs.readFileSync(path.join(root, 'assets/css/styles.css'), 'utf8');
   for (const [, asset] of css.matchAll(/url\(['"]?([^)'"\s]+)['"]?\)/g)) {
@@ -182,6 +182,22 @@ async function route(value) { w.location.hash = value; await new Promise(resolve
     assert.equal(pw.document.querySelector('meta[property="og:title"]').content, pw.document.title);
     assert.equal(pw.document.querySelector('meta[property="og:description"]').content, pw.document.querySelector('meta[name="description"]').content);
     assert.equal(pw.document.querySelector('meta[name="twitter:card"]').content, 'summary_large_image');
+    for (const image of pw.document.querySelectorAll('img[src$=".webp"]')) {
+      assert.ok(Number(image.getAttribute('width')) > 0);
+      assert.ok(Number(image.getAttribute('height')) > 0);
+      assert.ok(image.getAttribute('sizes'));
+      for (const candidate of image.getAttribute('srcset').split(',')) {
+        assert.ok(fs.existsSync(path.join(root, candidate.trim().split(/\s+/)[0])));
+      }
+    }
+    if (file === 'index.html' || file.startsWith('products/')) {
+      const priority = pw.document.querySelector('img[fetchpriority="high"]');
+      assert.ok(priority, `Missing priority image: ${file}`);
+      assert.equal(priority.getAttribute('loading'), 'eager');
+      const preload = pw.document.querySelector('link[rel="preload"][as="image"]');
+      assert.equal(preload.getAttribute('href'), priority.getAttribute('src'));
+      assert.equal(preload.getAttribute('imagesrcset'), priority.getAttribute('srcset'));
+    }
     if (file === '404.html' || file === 'thank-you.html') {
       assert.match(pw.document.querySelector('meta[name="robots"]').content, /noindex/);
     } else {

@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { JSDOM } = require('jsdom');
+const { createHash } = require('node:crypto');
 const { metadataConfig } = require('./metadata.cjs');
 
 const root = path.resolve(__dirname, '..');
@@ -39,6 +40,34 @@ for (const [file, route, description] of pages) {
   w.document.head.prepend(base);
   w.eval(productScript);
   w.eval(appScript);
+  for (const image of w.document.querySelectorAll('img[src="assets/images/indifood-logo.jpg"]')) {
+    const optimized = w.INDIFOOD.images?.['assets/images/indifood-logo.jpg'];
+    if (!optimized) continue;
+    image.src = optimized.src;
+    image.srcset = optimized.srcset;
+    image.sizes = '173px';
+    image.width = optimized.width;
+    image.height = optimized.height;
+    image.decoding = 'async';
+    image.loading = image.closest('footer') ? 'lazy' : 'eager';
+  }
+  const priorityImage = w.document.querySelector('img[fetchpriority="high"]');
+  if (priorityImage) {
+    const preload = w.document.createElement('link');
+    preload.rel = 'preload';
+    preload.setAttribute('as', 'image');
+    preload.href = priorityImage.getAttribute('src');
+    preload.setAttribute('imagesrcset', priorityImage.getAttribute('srcset'));
+    preload.setAttribute('imagesizes', priorityImage.getAttribute('sizes'));
+    preload.setAttribute('fetchpriority', 'high');
+    w.document.head.append(preload);
+  }
+  for (const element of w.document.querySelectorAll('script[src], link[rel="stylesheet"]')) {
+    const attribute = element.tagName === 'SCRIPT' ? 'src' : 'href';
+    const assetPath = element.getAttribute(attribute);
+    const version = createHash('sha256').update(fs.readFileSync(path.join(root, assetPath))).digest('hex').slice(0, 12);
+    element.setAttribute(attribute, `${assetPath}?v=${version}`);
+  }
   w.document.querySelector('meta[name="description"]').content = description;
   const cleanPath = file === 'index.html' ? '/' : '/' + file.replace(/\.html$/, '');
   w.document.querySelector('.skip').setAttribute('href', `${cleanPath}#main`);

@@ -18,6 +18,12 @@ Home, Products, nine individual flavour pages, About, Quality & Hygiene, Bulk Or
 
 Generated HTML files should be rebuilt from these sources.
 
+## Loading performance
+
+Page images use responsive, content-hashed WebP copies; source artwork and social preview images remain available. Product packs include 160, 480 and 960 pixel versions for baskets, cards and detail views. The hero and main detail image load eagerly with a responsive preload; other images load lazily with explicit dimensions.
+
+After changing source images, run `python scripts/optimize-images.py` (requires Pillow with WebP support), then `npm run build`. Commit the generated WebP files and updated `assets/data/products.js`; Vercel does not need Python. The build adds content hashes to CSS and script URLs so updates use fresh cache entries. The Node server supports gzip, ETags and 304 responses, one-year immutable browser caching for versioned assets, and Vercel CDN caching for public pages and assets. Enquiry responses remain uncached.
+
 ## Business content
 
 Content supplied by the owner: New Indifood; established 2018; Umesh Babarao Mukke; KVK Tondapur training on 11 January 2021; approximate 1,200 sq. ft. facility; capacity up to 300 kg per day; 10 workers (7 women and 3 men). Quality and hygiene statements follow the supplied copy; no certification numbers or additional accreditations have been added.

@@ -2,12 +2,13 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const { pipeline } = require('node:stream');
+const { createGzip } = require('node:zlib');
 const { handleLead } = require('./leads.cjs');
 
 const root = path.resolve(__dirname, '..');
 if (fs.existsSync(path.join(root, '.env'))) process.loadEnvFile(path.join(root, '.env'));
 const pages = new Set(['index', 'products', 'about', 'contact', 'bulk-orders', 'faq', 'privacy', 'quality', 'thank-you', '404']);
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.ico': 'image/x-icon' };
 
 function createServer(options = {}) {
   return http.createServer(async (req, res) => {
@@ -50,9 +51,27 @@ function createServer(options = {}) {
       }
       if (pageFile === '404.html') status = 404;
     }
-    res.writeHead(status, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream', 'Content-Length': stat.size, 'Cache-Control': 'no-cache', 'X-Content-Type-Options': 'nosniff' });
+    const extension = path.extname(file);
+    const isAsset = status === 200 && pathname.startsWith('/assets/');
+    const fingerprinted = /\.[a-f0-9]{12}\.webp$/.test(file) || /^[a-f0-9]{12}$/.test(url.searchParams.get('v') || '');
+    const cacheControl = isAsset && fingerprinted ? 'public, max-age=31536000, immutable' : isAsset && ['.jpg', '.png', '.webp', '.ico'].includes(extension) ? 'public, max-age=3600' : 'no-cache';
+    const etag = `W/"${stat.size.toString(16)}-${Math.trunc(stat.mtimeMs).toString(16)}"`;
+    const compressible = ['.html', '.css', '.js', '.svg'].includes(extension);
+    const gzip = compressible && (req.headers['accept-encoding'] || '').split(',').some(value => /^\s*gzip\s*(?:;\s*q\s*=\s*(\d(?:\.\d+)?))?\s*$/.test(value) && !/;\s*q\s*=\s*0(?:\.0*)?\s*$/.test(value));
+    const headers = { 'Content-Type': types[extension] || 'application/octet-stream', 'Cache-Control': cacheControl, 'ETag': etag, 'X-Content-Type-Options': 'nosniff' };
+    if (compressible) headers.Vary = 'Accept-Encoding';
+    if (isAsset) headers['Vercel-CDN-Cache-Control'] = 'public, s-maxage=86400';
+    else if (status === 200 && extension === '.html') headers['Vercel-CDN-Cache-Control'] = 'public, s-maxage=3600';
+    if (status === 200 && (req.headers['if-none-match'] || '').split(',').map(value => value.trim()).some(value => value === etag || value === '*')) {
+      res.writeHead(304, headers);
+      return res.end();
+    }
+    if (gzip) headers['Content-Encoding'] = 'gzip';
+    else headers['Content-Length'] = stat.size;
+    res.writeHead(status, headers);
     if (req.method === 'HEAD') return res.end();
-    pipeline(fs.createReadStream(file), res, () => {});
+    if (gzip) pipeline(fs.createReadStream(file), createGzip(), res, () => {});
+    else pipeline(fs.createReadStream(file), res, () => {});
   });
 }
 
